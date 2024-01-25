@@ -1,0 +1,214 @@
+{% extends "invoice/base/base.html" %}
+<!-- Content Row -->
+{% block content %}
+{% load static %}
+
+
+<script src="https://cdn.jsdelivr.net/npm/mammoth@1.4.8/mammoth.browser.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+<link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+<script src="https://cdn.ckeditor.com/4.16.0/standard/ckeditor.js"></script>
+<div class="row">
+    <!-- Area Chart -->
+    <div class="col-xl-12 col-lg-7">
+        <div class="card shadow mb-4">
+            <!-- Card Header - Dropdown -->
+            <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                <label class="m-0 font-weight-bold text-primary">Create invoice</label>
+            </div>
+            <!-- Card Body -->
+            <div class="card-body">
+                <form id="saveForm" method="post" action="">
+                    {% csrf_token %}
+                    <div class="mb-3">
+                        <label class="form-label" for="invoice_customer">Client name</label>
+                        {{form.customer}}
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label" for="invoice_contact">Contact</label>
+                        {{form.contact}}
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label" for="invoice_comments">Comments</label>
+                        {{form.comments}}
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label" for="invoice_email">Email</label>
+                        {{form.email}}
+                    </div>
+
+                    <div class="mb-3">
+<!--                        <label class="form-label" ></label>-->
+
+                        {{form.media}}
+
+                        <textarea style="display:none" name="editor_content" id="editor_content">
+
+                        </textarea>
+                    </div>
+                    <div class="mb-3">
+                        <label style="cursor: pointer; font-weight: bold; font-size: 1.1em; border: 1px solid #ccc; padding: 5px 10px;" for="templateFileInput">Select a Template:</label>
+
+                            <input type="file"  id="templateFileInput" onchange="uploadTemplate()" style="display:none">
+
+                    </div>
+
+                    
+
+                    <div class="mb-3 d-flex justify-content-center">
+
+                        <input class="btn btn-outline-success" style="margin: 0 1em 0 1em; width: 40%" type="submit"
+                            name="create-invoice">
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}
+
+{% block custom_js %}
+<script>
+function uploadTemplate() {
+    var fileInput = document.getElementById('templateFileInput');
+var editorContent = 'editor_content'; // replace with the ID of your CKEditor instance
+
+var file = fileInput.files[0];
+
+if (file) {
+    var reader = new FileReader();
+    reader.onloadend = function (event) {
+        var arrayBuffer = reader.result;
+
+        mammoth.extractRawText({ arrayBuffer: arrayBuffer }).then(function (resultObject) {
+            var rawText = resultObject.value;
+
+            // Extracted raw text, you can use it or process further if needed
+
+            mammoth.convertToHtml({ arrayBuffer: arrayBuffer }).then(function (resultObject) {
+                var htmlContent = resultObject.value;
+
+                // Create CKEditor instance
+                var ck = CKEDITOR.replace(editorContent, {
+                    on: {
+                        instanceReady: function (ev) {
+                            // Set the content of the CKEditor instance to the converted HTML content
+                            this.setData(htmlContent);
+
+                            // Adjust the CKEditor instance height based on content
+                            this.container.$.style.height = 'auto';
+                            this.resize('100%', this.container.$.scrollHeight + 'px');
+                        }
+                    }
+                });
+
+                // Handle image insertion if needed
+                var images = resultObject.messages.filter(function (msg) {
+                    return msg.type === 'insert-image';
+                });
+
+                images.forEach(function (image) {
+                    // Here, you can handle image insertion into CKEditor as needed
+                    // You may need to extract image data or adjust paths based on your use case
+                });
+            });
+        });
+    };
+
+    // Read the file as an array buffer
+    reader.readAsArrayBuffer(file);
+}
+
+
+
+
+
+
+
+    function handleError(error) {
+        console.error('Error converting DOCX to HTML:', error);
+    }
+}
+
+
+$('#saveForm').on('submit', function (event) {
+    event.preventDefault();
+
+    // Retrieve CSRF token from the form
+    var csrftoken = $('[name=csrfmiddlewaretoken]').val();
+
+    // Retrieve content from the CKEditor instance
+
+    try {
+    contentData = CKEDITOR.instances.editor_content.getData();
+} catch (error) {
+    // Handle the error here
+    alert("This is not  valid .docx file try other ");
+}
+
+    $.ajax({
+        url: 'http://127.0.0.1:8000/create_invoice/',
+        method: 'POST',
+        data: {
+        customer: $('#invoice_customer').val(),
+        contact: $('#invoice_contact').val(),
+        email: $('#invoice_email').val(),
+        comments: $('#invoice_comments').val(),
+        content: contentData,
+        csrfmiddlewaretoken: csrftoken
+    },
+
+        success: function (response) {
+            console.log("Template saved successfully:", response.message);
+            window.location.href = "/view_invoice";
+        },
+        error: function (xhr, status, error) {
+            console.error("Error saving template:", status, error);
+            showErrorPopup("Error Saving Template", "An error occurred while saving the template. Please try again.");
+            }
+        });
+    });
+
+    function showErrorPopup(title, message) {
+        $("<div></div>")
+            .html(message)
+            .dialog({
+                title: title,
+                resizable: false,
+                modal: true,
+                buttons: {
+                    "OK": function () {
+                        $(this).dialog("close");
+                    }
+                }
+            });
+    }
+
+
+
+    function cloneMore(selector, type) {
+        var newElement = $(selector).clone(true);
+        var total = $('#id_' + type + '-TOTAL_FORMS').val();
+        newElement.find(':input').each(function () {
+            var name = $(this).attr('name').replace('-' + (total - 1) + '-', '-' + total + '-');
+            var id = 'id_' + name;
+            $(this).attr({ 'name': name, 'id': id }).val('').removeAttr('checked');
+        });
+        newElement.find('label').each(function () {
+            var newFor = $(this).attr('for').replace('-' + (total - 1) + '-', '-' + total + '-');
+            $(this).attr('for', newFor);
+        });
+        total++;
+        $('#id_' + type + '-TOTAL_FORMS').val(total);
+        $(selector).after(newElement);
+    }
+
+    $('#add_more').click(function () {
+        cloneMore('div.table:last', 'form');
+    });
+</script>
+{% endblock %}

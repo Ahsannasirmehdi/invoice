@@ -1,0 +1,153 @@
+{% load static %}
+{% block start %}
+<html lang="en">
+
+    <meta charset="UTF-8">
+    <title>Subscription Form</title>
+    <head>
+  <title>Checkout</title>
+  <script src="https://js.stripe.com/v3/"></script>
+</head>
+    <style>
+    /* Existing styles... */
+    /* Adjustments and additions */
+    #card-element {
+    height: 40px; /* Example height */
+    width: 94%; /* Example width */
+    /* Other necessary styles */
+}
+
+    body {
+        font-family: 'Arial', sans-serif;
+        background-color: #f9f9f9; /* Slightly lighter background */
+        margin: 0;
+        padding: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+    }
+    .container {
+        background-color: #ffffff;
+        padding: 40px;
+        border-radius: 12px;
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+        text-align: center;
+        max-width: 90%;
+        width: 450px;
+    }
+    h1 {
+        color: #333333;
+        font-size: 28px;
+        margin-bottom: 20px;
+    }
+    form {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+    label {
+        margin-bottom: 15px;
+        color: #171515;
+        display: block;
+        font-size: 21px;
+    }
+    select {
+        padding: 8px;
+        font-size: 16px;
+        border-radius: 6px;
+    }
+    #plan  {
+    width : 428px;
+    }
+    button {
+        padding: 10px 20px;
+        margin-top: 20px;
+        font-size: 18px;
+        border-radius: 6px;
+        cursor: pointer;
+        background-color: #4caf50;
+        color: #ffffff;
+        border: none;
+        transition: background-color 0.3s ease;
+    }
+    button:hover {
+        background-color: #388e3c; /* Darker shade on hover */
+    }
+</style>
+
+
+<body>
+    <div class="container">
+        <img src="https://assets-global.website-files.com/6372cf43b12f4050f98e2731/642c5506f0b77654db82a5d1_62585702e84e095077ffcc1e_Kajabi_Jan31_WhyToChooseASubscriptionModel_-01.jpeg" alt="Subscription Image" width="150">
+        <h1>Subscribe Now!</h1>
+        <form action="{% url 'sub' %}" method="post" id="payment-form">
+            {% csrf_token %}
+            <label for="plan">Choose a Plan:</label>
+            <select name="plan" id="plan">
+                <option value="MONTHLY">MONTHLY - 20 R</option>
+                <option value="YEARLY">YEARLY - 100 R</option>
+                <!-- Add other plan options here -->
+            </select>
+       <br>
+      <label for="card-element">
+         Credit or debit card
+      </label>
+      <div id="card-element">
+      <!-- A Stripe Element will be inserted here. -->
+      </div>
+
+      <!-- Used to display form errors. -->
+      <div id="card-errors" role="alert"></div>
+
+            <button type="submit"  class="btn btn-lg btn-primary btn-block">Pay</button>
+     </div>
+</form>
+
+        <script>
+
+        const stripe = Stripe("pk_test_TYooMQauvdEDq54NiTphI7jx");
+        const elements = stripe.elements();
+        const style = {
+            base: {
+                fontSize: '16px',
+                color: '#32325d',
+            },
+        };
+
+        const card = elements.create('card', { style });
+        card.mount('#card-element');
+
+        const form = document.getElementById('payment-form');
+        form.addEventListener('submit', async (event) => {
+            event.preventDefault();
+            const { token, error } = await stripe.createToken(card);
+
+            if (error) {
+                const errorElement = document.getElementById('card-errors');
+                errorElement.textContent = error.message;
+            } else {
+                stripeTokenHandler(token);
+            }
+        });
+
+        const stripeTokenHandler = (token) => {
+            const form = document.getElementById('payment-form');
+            const hiddenInput = document.createElement('input');
+            hiddenInput.setAttribute('type', 'hidden');
+            hiddenInput.setAttribute('name', 'stripeToken');
+            hiddenInput.setAttribute('value', token.id);
+            form.appendChild(hiddenInput);
+
+            form.submit();
+        }
+    </script>
+</body>
+</html>
+
+
+
+
+
+
+{% endblock %}

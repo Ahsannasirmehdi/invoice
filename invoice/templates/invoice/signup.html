@@ -1,0 +1,74 @@
+
+<html>
+<head>
+  <title>Sign Up</title>
+  <style>
+    /* Styles for the form */
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f4;
+    }
+    .container {
+      max-width: 400px;
+      margin: 0 auto;
+      padding: 20px;
+      background-color: #fff;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    h2 {
+      text-align: center;
+    }
+    input[type="text"],
+    input[type="email"],
+    input[type="password"],
+    input[type="submit"] {
+      width: 100%;
+      padding: 10px;
+      margin: 8px 0;
+      display: inline-block;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      box-sizing: border-box;
+    }
+    input[type="submit"] {
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+    input[type="submit"]:hover {
+      background-color: #45a049;
+    }
+    /* Media Query for responsiveness */
+        @media (max-width: 600px) {
+            .container {
+                max-width: 90%;
+                width: 300px;
+            }
+        }
+
+  </style>
+
+</head>
+<body>
+
+<div class="container">
+  <h2>Sign Up</h2>
+
+  <form action="{% url 'signup' %}" method="post">
+    {% if message %} <div class="alert alert-info">{{ message }}</div> {% endif %}
+  {% csrf_token %}
+  <input type="text" placeholder="Username" name="username" required>
+  <input type="email" placeholder="Email" name="email" required>
+  <input type="password" placeholder="Password" name="password" required>
+  <input type="submit" value="Sign Up">
+</form>
+  <p>Don't have an account? <a href="{% url 'sign' %}">Sign In</a></p>
+</div>
+
+<!-- JavaScript for message popup -->
+
+
+</body>
+</html>

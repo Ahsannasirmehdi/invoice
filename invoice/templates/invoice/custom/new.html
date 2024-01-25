@@ -1,0 +1,151 @@
+<!--invoice_pdf.html-->
+{% load static %}
+{% block content %}
+<div>
+    <div style="clear:both;">
+        <div style="float:right;">
+            <p style="margin-top:6pt; margin-bottom:10pt; line-height:200%; font-size:8pt;"><span style="text-transform:uppercase;">1</span></p>
+        </div>
+        <p style="margin-top:10pt; margin-right:18pt; margin-bottom:4pt; line-height:200%; font-size:8pt;"><span style="text-transform:uppercase;">&nbsp;</span></p>
+    </div>
+    <table cellspacing="0" cellpadding="0" style="border-collapse:collapse;">
+        <tbody>
+            <tr>
+                <td colspan="2" style="width:446.8pt; padding-right:5.4pt; padding-left:5.4pt; vertical-align:top;">
+
+                    <p style="margin-top:0pt; margin-bottom:0pt; text-align:center; line-height:150%; font-size:12pt;"><strong><u><span style="font-family:Arial; text-transform:uppercase; background-color:;">{{product.product_name}}</span></u></strong></p>
+                    <p style="margin-top:0pt; margin-bottom:0pt; text-align:center; line-height:150%; font-size:12pt;"><strong><u><span style="font-family:Arial; text-transform:uppercase; background-color:;">(</span></u></strong><a name="division"></a><strong><u><span style="font-family:Arial; text-transform:uppercase; background-color:;">Held at johannesburg)</span></u></strong></p>
+                    <p style="margin-top:0pt; margin-bottom:0pt; text-align:center; line-height:150%; font-size:12pt;"><strong><span style="font-family:Arial; text-transform:uppercase;">&nbsp;</span></strong></p>
+                    <p style="margin-top:0pt; margin-bottom:0pt; text-align:right; line-height:150%; font-size:12pt;"><strong><u><span style="font-family:Arial; text-transform:uppercase;">case n</span></u></strong><a name="case_no"></a><strong><u><span style="font-family:Arial; text-transform:uppercase;">O:&nbsp;</span></u></strong><strong><u><span style="font-family:Arial; text-transform:uppercase; background-color:;">1234</span></u></strong></p>
+
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2" style="width:446.8pt; padding-right:5.4pt; padding-left:5.4pt; vertical-align:top;">
+                    <p style="margin-top:0pt; margin-bottom:6pt; text-align:center; line-height:150%; font-size:12pt;"><strong><span style="font-family:Arial; text-transform:uppercase;">&nbsp;</span></strong></p>
+                    <p style="margin-top:6pt; margin-bottom:12pt; text-align:justify; line-height:150%; font-size:12pt;"><span style="font-family:Arial;">In the matter between:</span></p>
+                    <p style="margin-top:12pt; margin-bottom:6pt; text-align:justify; line-height:150%; font-size:12pt;"><span style="font-family:Arial;">&nbsp;</span></p>
+                </td>
+            </tr>
+            <tr>
+                <td style="width:334.8pt; padding-right:5.4pt; padding-left:5.4pt; vertical-align:top;">
+                    <p style="margin-top:0pt; margin-bottom:0pt; line-height:150%; font-size:12pt;"><strong><span style="font-family:Arial; text-transform:uppercase; background-color:;">{{product.company}}</span></strong></p>
+                </td>
+                <td style="width:101.2pt; padding-right:5.4pt; padding-left:5.4pt; vertical-align:top;">
+                    <p style="margin-top:0pt; margin-bottom:12pt; text-align:right; line-height:150%; font-size:12pt;"><span style="font-family:Arial;">Applicant</span></p>
+                </td>
+            </tr>
+            <tr>
+                <td style="width:334.8pt; padding-right:5.4pt; padding-left:5.4pt; vertical-align:top;">
+                    <p style="margin-top:6pt; margin-bottom:12pt; text-align:justify; line-height:150%; font-size:12pt;"><span style="font-family:Arial;">And</span></p>
+                    <p style="margin-top:12pt; margin-bottom:6pt; text-align:justify; line-height:150%; font-size:12pt;"><span style="font-family:Arial;">&nbsp;</span></p>
+                </td>
+                <td style="width:101.2pt; padding-right:5.4pt; padding-left:5.4pt; vertical-align:top;">
+                    <p style="margin-top:0pt; margin-bottom:12pt; text-align:right; line-height:150%; font-size:12pt;"><span style="font-family:Arial;">&nbsp;</span></p>
+                </td>
+            </tr>
+            <tr>
+                <td style="width:334.8pt; padding-right:5.4pt; padding-left:5.4pt; vertical-align:top;">
+                    <p style="margin-top:0pt; margin-bottom:0pt; line-height:150%; font-size:12pt;"><strong><span style="font-family:Arial; text-transform:uppercase; background-color:;">{{product.general}}</span></strong></p>
+                </td>
+                <td style="width:101.2pt; padding-right:5.4pt; padding-left:5.4pt; vertical-align:top;">
+                    <p style="margin-top:0pt; margin-bottom:12pt; text-align:right; line-height:150%; font-size:12pt;"><span style="font-family:Arial;">First Respondent</span></p>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <p style="margin-top:6pt; margin-bottom:6pt; line-height:150%;"><span style="font-family:Arial;">&nbsp;</span></p>
+    <table cellspacing="0" cellpadding="0" style="border-collapse:collapse;">
+        <tbody>
+            <tr>
+                <td style="width:446.8pt; border-top-style:solid; border-top-width:0.75pt; border-bottom-style:solid; border-bottom-width:0.75pt; padding-right:5.4pt; padding-left:5.4pt; vertical-align:top;">
+                    <p style="margin-top:6pt; margin-bottom:6pt; text-align:center; line-height:150%; font-size:12pt;"><strong><span style="font-family:Arial; text-transform:uppercase;">Notice of Motion</span></strong></p>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <p style="margin-top:6pt; margin-bottom:12pt; line-height:150%;"><span style="font-family:Arial;">&nbsp;</span></p>
+    <h1 style="margin-top:12pt; margin-bottom:12pt; line-height:150%; font-size:12pt;"><span style="font-family:Arial;">TAKE NOTICE</span><span style="font-family:Arial; font-weight:normal;">&nbsp;that the applicant will make application to the above Honourable Court on&nbsp;</span><span style="font-family:Arial; font-weight:normal; background-color:;">{{product.date}}</span><span style="font-family:Arial; font-weight:normal;">&nbsp;or so soon thereafter as counsel may be heard for an order in the following terms:</span></h1>
+    <h1 style="margin-top:12pt; margin-left:36pt; margin-bottom:12pt; text-indent:-36pt; line-height:150%; font-size:12pt;"><span style="font-family:Arial; font-weight:normal;">1.</span><span style="width:25.99pt; font:7pt 'Times New Roman'; display:inline-block;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="font-family:Arial; font-weight:normal; background-color:;">The failure of the applicant to comply with the provisions of the Rules for the Conduct of Proceedings in the Labour Court relating to times and manner of service be condoned on grounds of u</span><span style="font-family:Arial; font-weight:normal;">rgency.</span></h1>
+    <h1 style="margin-top:12pt; margin-left:36pt; margin-bottom:12pt; text-indent:-36pt; line-height:150%; font-size:12pt;"><span style="font-family:Arial; font-weight:normal;">2.</span><span style="width:25.99pt; font:7pt 'Times New Roman'; display:inline-block;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="font-family:Arial; font-weight:normal; background-color:;">A&nbsp;</span><em><span style="font-family:Arial; font-weight:normal; background-color:;">Rule Nisi</span></em><span style="font-family:Arial; font-weight:normal; background-color:;">&nbsp;be&nbsp;</span><span style="font-family:Arial; background-color:;">issued</span><span style="font-family:Arial; font-weight:normal; background-color:;">&nbsp;calling upon the respondents to appear and show cause on a date and time to be determined by this Honourable Court why an order should not be granted in the following terms</span></h1>
+    <h1 style="margin-top:12pt; margin-left:36pt; margin-bottom:12pt; text-indent:-36pt; line-height:150%; font-size:12pt;"><span style="font-family:Arial; font-weight:normal; background-color:;">3.</span><span style="width:25.99pt; font:7pt 'Times New Roman'; display:inline-block;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="font-family:Arial; font-weight:normal; background-color:;">The Respondent be directed to pay the costs of this application on the</span><span style="font-family:Arial; font-weight:normal; background-color:;">&nbsp;&nbsp;</span><span style="font-family:Arial; font-weight:normal; background-color:;">scale as between attorney and own client</span></h1>
+    <h1 style="margin-top:12pt; margin-left:36pt; margin-bottom:12pt; text-indent:-36pt; line-height:150%; font-size:12pt;"><span style="font-family:Arial; font-weight:normal;">4.</span><span style="width:25.99pt; font:7pt 'Times New Roman'; display:inline-block;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="font-family:Arial; font-weight:normal;">Further and/or alternative relief.</span></h1>
+    <h1 style="margin-top:12pt; margin-bottom:12pt; line-height:150%; font-size:12pt;"><span style="font-family:Arial;">TAKE FURTHER NOTICE THAT</span><span style="font-family:Arial; font-weight:normal;">:</span></h1>
+    <h1 style="margin-top:12pt; margin-left:36pt; margin-bottom:12pt; text-indent:-36pt; line-height:150%; font-size:12pt;"><span style="font-family:Arial; font-weight:normal;">5.</span><span style="width:25.99pt; font:7pt 'Times New Roman'; display:inline-block;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="font-family:Arial; font-weight:normal;">the affidavit of&nbsp;</span><span style="font-family:Arial;">[</span><span style="font-family:Arial; background-color:;">INSERT NAMES</span><span style="font-family:Arial;">]&nbsp;</span><span style="font-family:Arial; font-weight:normal;">attached hereto, will be used in support of this application;&nbsp;</span></h1>
+    <h1 style="margin-top:12pt; margin-left:36pt; margin-bottom:12pt; text-indent:-36pt; line-height:150%; font-size:12pt;"><span style="font-family:Arial; font-weight:normal;">6.</span><span style="width:25.99pt; font:7pt 'Times New Roman'; display:inline-block;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="font-family:Arial; font-weight:normal;">the applicant appoints [</span><span style="font-family:Arial; font-weight:normal; background-color:;">INSERT NAMES OF ATTORNEYS</span><span style="font-family:Arial; font-weight:normal;">] as the applicant&rsquo;s representatives in this matter;</span></h1>
+    <h1 style="margin-top:12pt; margin-left:36pt; margin-bottom:12pt; text-indent:-36pt; line-height:150%; font-size:12pt;"><span style="font-family:Arial; font-weight:normal;">7.</span><span style="width:25.99pt; font:7pt 'Times New Roman'; display:inline-block;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="font-family:Arial; font-weight:normal;">the applicant will accept service of all proceedings in the above matter at the address of the applicant&rsquo;s representatives which is set out below; and</span></h1>
+    <h1 style="margin-top:12pt; margin-left:36pt; margin-bottom:12pt; text-indent:-36pt; line-height:150%; font-size:12pt;"><span style="font-family:Arial; font-weight:normal;">8.</span><span style="width:25.99pt; font:7pt 'Times New Roman'; display:inline-block;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="font-family:Arial; font-weight:normal;">if any of the respondents intend opposing this application, such respondents are required to deliver an answering affidavit by&nbsp;</span><span style="font-family:Arial;">[</span><span style="font-family:Arial; background-color:;">insert time and date</span><span style="font-family:Arial;">]</span><span style="font-family:Arial; font-weight:normal;">.</span></h1>
+    <h1 style="margin-top:12pt; margin-left:36pt; margin-bottom:12pt; text-indent:-36pt; line-height:150%; font-size:12pt;"><span style="font-family:Arial; font-weight:normal;">&nbsp;</span></h1>
+    <h1 style="margin-top:12pt; margin-left:36pt; margin-bottom:12pt; text-indent:-36pt; line-height:150%; font-size:12pt;"><span style="font-family:Arial; font-weight:normal;">KINDLY place the matter on the roll for hearing accordingly.</span></h1>
+    <h1 style="margin-top:12pt; margin-left:36pt; margin-bottom:6pt; text-indent:-36pt; line-height:150%; font-size:12pt;"><span style="font-family:Arial; font-weight:normal;">&nbsp;</span></h1>
+    <table cellspacing="0" cellpadding="0" style="border-collapse:collapse;">
+        <tbody>
+            <tr style="height:18pt;">
+                <td colspan="3" style="width:442.85pt; padding-right:5.4pt; padding-left:5.4pt; vertical-align:top;">
+                    <p style="margin-top:0pt; margin-bottom:0pt; text-align:justify; line-height:150%; font-size:12pt;"><span style="font-family:Arial;">SIGNED at JOHANNESBURG on _______ August 2023</span></p>
+                    <p style="margin-top:0pt; margin-bottom:0pt; text-align:justify; line-height:150%; font-size:12pt;"><span style="font-family:Arial;">&nbsp;</span></p>
+                    <p style="margin-top:0pt; margin-bottom:0pt; text-align:justify; line-height:150%; font-size:12pt;"><span style="font-family:Arial;">&nbsp;</span></p>
+                    <p style="margin-top:0pt; margin-bottom:0pt; text-align:justify; line-height:150%; font-size:12pt;"><span style="font-family:Arial;">&nbsp;</span></p>
+                </td>
+            </tr>
+            <tr style="height:18pt;">
+                <td style="vertical-align:top;"><br></td>
+                <td style="vertical-align:top;"><br></td>
+                <td style="width:145.15pt; border-top-style:solid; border-top-width:0.75pt; padding-right:5.4pt; padding-left:5.4pt; vertical-align:top;">
+                    <p style="margin-top:0pt; margin-bottom:0pt; text-align:justify; line-height:150%; font-size:12pt;"><span style="font-family:Arial;">[</span><span style="font-family:Arial; background-color:;">NAMES OF ATTORNEYS</span></p>
+                    <p style="margin-top:0pt; margin-bottom:0pt; text-align:justify; line-height:150%; font-size:12pt;"><a name="bdh_attorneys_for"></a><span style="font-family:Arial; background-color:;">Applicant&apos;s Attorneys</span></p>
+                    <p style="margin-top:0pt; margin-bottom:0pt; text-align:justify; line-height:150%; font-size:12pt;"><a name="address_bdh_cors"></a><span style="font-family:Arial; background-color:;">ADDRESS</span></p>
+                    <p style="margin-top:0pt; margin-bottom:0pt; text-align:justify; line-height:150%; font-size:12pt;"><span style="font-family:Arial; background-color:;">Ref: /145126</span></p>
+                    <p style="margin-top:0pt; margin-bottom:0pt; text-align:justify; line-height:150%; font-size:12pt;"><span style="font-family:Arial; background-color:;">Tel: 011 1230 456</span></p>
+                    <p style="margin-top:0pt; margin-bottom:0pt; text-align:justify; line-height:150%; font-size:12pt;"><span style="font-family:Arial; background-color:;">E-mail:</span><span style="font-family:Arial; background-color:;">&nbsp;&nbsp;</span><span style="font-family:Arial; background-color:;">[INSERT EMAIL]</span></p>
+                </td>
+            </tr>
+            <tr style="height:46pt;">
+                <td style="width:40.3pt; padding-right:5.4pt; padding-left:5.4pt; vertical-align:top;">
+                    <p style="margin-top:0pt; margin-bottom:0pt; text-align:justify; line-height:150%; font-size:12pt;"><span style="font-family:Arial;">&nbsp;</span></p>
+                    <p style="margin-top:0pt; margin-bottom:0pt; text-align:justify; line-height:150%; font-size:12pt;"><span style="font-family:Arial;">To:</span></p>
+                </td>
+                <td style="width:235.8pt; padding-right:5.4pt; padding-left:5.4pt; vertical-align:top;">
+                    <p style="margin-top:0pt; margin-bottom:0pt; text-align:justify; line-height:150%; font-size:12pt;"><span style="font-family:Arial;">&nbsp;</span></p>
+                    <p style="margin-top:0pt; margin-bottom:0pt; text-align:justify; line-height:150%; font-size:12pt;"><span style="font-family:Arial;">The Registrar of the above</span></p>
+                    <p style="margin-top:0pt; margin-bottom:0pt; text-align:justify; line-height:150%; font-size:12pt;"><span style="font-family:Arial;">Honourable Court</span></p>
+                    <p style="margin-top:0pt; margin-bottom:0pt; text-align:justify; line-height:150%; font-size:12pt;"><a name="city_of_court"></a><span style="font-family:Arial;">&nbsp;</span></p>
+                </td>
+                <td style="width:145.15pt; padding-right:5.4pt; padding-left:5.4pt; vertical-align:top;">
+                    <p style="margin-top:0pt; margin-bottom:0pt; text-align:justify; line-height:150%; font-size:12pt;"><span style="font-family:Arial;">&nbsp;</span></p>
+                </td>
+            </tr>
+            <tr style="height:46pt;">
+                <td style="width:40.3pt; padding-right:5.4pt; padding-left:5.4pt; vertical-align:top;">
+                    <p style="margin-top:0pt; margin-bottom:0pt; text-align:justify; line-height:150%; font-size:12pt;"><span style="font-family:Arial;">&nbsp;</span></p>
+                    <p style="margin-top:0pt; margin-bottom:0pt; text-align:justify; line-height:150%; font-size:12pt;"><span style="font-family:Arial;">&nbsp;</span></p>
+                    <p style="margin-top:0pt; margin-bottom:0pt; text-align:justify; line-height:150%; font-size:12pt;"><span style="font-family:Arial; background-color:;">And To:</span></p>
+                </td>
+                <td style="width:235.8pt; padding-right:5.4pt; padding-left:5.4pt; vertical-align:top;">
+                    <p style="margin-top:0pt; margin-bottom:0pt; text-align:justify; line-height:150%; font-size:12pt;"><span style="font-family:Arial;">&nbsp;</span></p>
+                    <p style="margin-top:0pt; margin-bottom:0pt; text-align:justify; line-height:150%; font-size:12pt;"><strong><span style="font-family:Arial;">&nbsp;</span></strong></p>
+                    <p style="margin-top:0pt; margin-bottom:0pt; text-align:justify; line-height:150%; font-size:12pt;"><a name="Name_other_attorneys"></a><span style="font-family:Arial; background-color:;">South African Union</span></p>
+                    <p style="margin-top:0pt; margin-bottom:0pt; text-align:justify; line-height:150%; font-size:12pt;"><span style="font-family:Arial; background-color:;">First Respondent</span></p>
+                    <p style="margin-top:0pt; margin-bottom:0pt; text-align:justify; line-height:150%; font-size:12pt;"><span style="font-family:Arial; background-color:;">Garment Centre</span></p>
+                    <p style="margin-top:0pt; margin-bottom:0pt; text-align:justify; line-height:150%; font-size:12pt;"><span style="font-family:Arial; background-color:;">75 End Street</span></p>
+                    <p style="margin-top:0pt; margin-bottom:0pt; text-align:justify; line-height:150%; font-size:12pt;"><span style="font-family:Arial; background-color:;">Johannesburg</span></p>
+                    <p style="margin-top:0pt; margin-bottom:0pt; text-align:justify; line-height:150%; font-size:12pt;"><span style="font-family:Arial; background-color:;">Tel: (011) /6</span></p>
+                    <p style="margin-top:0pt; margin-bottom:0pt; text-align:justify; line-height:150%; font-size:12pt;"><span style="font-family:Arial; background-color:;">Email&nbsp;</span></p>
+                </td>
+                <td style="width:145.15pt; padding-right:5.4pt; padding-left:5.4pt; vertical-align:top;">
+                    <p style="margin-top:0pt; margin-bottom:0pt; text-align:justify; line-height:150%; font-size:12pt;"><span style="font-family:Arial;">&nbsp;</span></p>
+                    <p style="margin-top:0pt; margin-bottom:0pt; text-align:justify; line-height:150%; font-size:12pt;"><span style="font-family:Arial;">&nbsp;</span></p>
+                    <p style="margin-top:0pt; margin-bottom:0pt; text-align:justify; line-height:150%; font-size:12pt;"><strong><span style="font-family:Arial; background-color:;">PER TELEFAX</span></strong></p>
+                </td>
+            </tr>
+            <tr style="height:0pt;">
+                <td style="width:51.1pt;"><br></td>
+                <td style="width:246.6pt;"><br></td>
+                <td style="width:155.95pt;"><br></td>
+            </tr>
+        </tbody>
+    </table>
+    <p style="margin-top:6pt; margin-bottom:6pt; line-height:150%;"><span style="font-family:Arial;">&nbsp;</span></p>
+</div>
+<p style="bottom: 10px; right: 10px; position: absolute;"><a href="https://wordtohtml.net" target="_blank" style="font-size:11px; color: #d0d0d0;">Converted to HTML with WordToHTML.net</a></p>
+{% endblock %}

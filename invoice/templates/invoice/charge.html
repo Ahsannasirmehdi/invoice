@@ -1,0 +1,39 @@
+{% block start %}
+
+<html>
+  <head>
+    <title>Thanks for your order!</title>
+    <style>
+      body {
+        text-align: center;
+        font-family: Arial, sans-serif;
+      }
+      .container {
+        margin-top: 50px;
+      }
+      .btn {
+        display: inline-block;
+        padding: 10px 20px;
+        margin-top: 20px;
+        text-decoration: none;
+        background-color: #3498db;
+        color: white;
+        border-radius: 5px;
+        transition: background-color 0.3s ease;
+      }
+      .btn:hover {
+        background-color: #2980b9;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>Thanks for your order!</h1>
+      <p>We appreciate your business! If you have any questions, please email <a href="mailto:orders@example.com">orders@example.com</a>.</p>
+      <a href="{% url 'adminpanel' %}" class="btn">Back To Home</a>
+    </div>
+  </body>
+</html>
+
+
+{% endblock %}
