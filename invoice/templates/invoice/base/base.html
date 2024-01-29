@@ -44,17 +44,20 @@
             </a>
 
             <!-- Divider -->
-            <hr class="sidebar-divider my-0">
 
-            <!-- Nav Item - Dashboard -->
-            <li class="nav-item active">
-                <a class="nav-link" href="{% url 'create_invoice' %}">
-                    <i class="fas fa-cash-register"></i>
-                    <span>Create Documents</span></a>
-            </li>
+            {% if request.session.profile %}
 
+<!--                 Nav Item - Dashboard -->
+                <hr class="sidebar-divider my-0">
+                <li class="nav-item active">
+                    <a class="nav-link" href="{% url 'create_invoice' %}">
+                        <i class="fas fa-cash-register"></i>
+                        <span>Create Documents</span></a>
+                </li>
+               <hr class="sidebar-divider">
+            {% endif %}
             <!-- Divider -->
-            <hr class="sidebar-divider">
+
 
 
             {% comment %} <li class="nav-item">
@@ -71,40 +74,42 @@
                     </div>
                 </div>
             </li> {% endcomment %}
-
+            {% if request.session.profile %}
             <!-- Nav Item - Pages Collapse Menu -->
-            <li class="nav-item">
-                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePages"
-                    aria-expanded="true" aria-controls="collapsePages">
-                    <i class="fas fa-cart-plus"></i>
-                    <span>Documents</span>
-                </a>
-                <div id="collapsePages" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
-                    <div class="bg-white py-2 collapse-inner rounded">
-                        <a class="collapse-item" href="{% url 'create_invoice' %}">Add</a>
-                        <a class="collapse-item" href="{% url 'view_invoice' %}">View</a>
+                        <li class="nav-item">
+                            <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePages"
+                                aria-expanded="true" aria-controls="collapsePages">
+                                <i class="fas fa-cart-plus"></i>
+                                <span>Documents</span>
+                            </a>
+                            <div id="collapsePages" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
+                                <div class="bg-white py-2 collapse-inner rounded">
+                                    <a class="collapse-item" href="{% url 'create_invoice' %}">Add</a>
+                                    <a class="collapse-item" href="{% url 'view_invoice' %}">View</a>
 
-                        <a class="collapse-item" href="{% url 'delete_all_invoice' %}">Delete</a>
+                                    <a class="collapse-item" href="{% url 'delete_all_invoice' %}">Delete</a>
 
-                        <script>
-    function deleteInvoice() {
-        // Trigger form submission when clicking on the link
-        document.getElementById('deleteForm').submit();
-    }
-</script>
+                                    <script>
+                function deleteInvoice() {
+                    // Trigger form submission when clicking on the link
+                    document.getElementById('deleteForm').submit();
+                }
+            </script>
 
 
-                    </div>
-                </div>
-            </li>
-
-            <!-- Divider -->
+                                </div>
+                            </div>
+                        </li>
             <hr class="sidebar-divider">
-
-            <!-- Sidebar Toggler (Sidebar) -->
-            <div class="text-center d-none d-md-inline">
+             <div class="text-center d-none d-md-inline">
                 <button class="rounded-circle border-0" id="sidebarToggle"></button>
             </div>
+            {% endif %}
+            <!-- Divider -->
+
+
+            <!-- Sidebar Toggler (Sidebar) -->
+
 
             <!-- Sidebar Message -->
             {% comment %} <div class="sidebar-card">
@@ -135,15 +140,13 @@
                        </script>
 
                 {% else %}
+                    <a href='#' class="btn btn-primary mr-3">{{request.user}}</a>
                     <a href='{% url "logout_view" %}' class="btn btn-primary mr-3">Logout</a>
                 {% endif %}
-                {% if request.session.profile %}
-                   <a href='{% url "sub" %}' class="btn btn-primary">Subscribed</a>
 
-                {% else %}
 
-                     <a href='{% url "sub" %}' class="btn btn-primary">Subscribe</a>
-                {% endif %}
+
+
 
                 </form>
 

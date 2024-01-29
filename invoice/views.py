@@ -2,7 +2,7 @@ from datetime import datetime, timedelta
 import uuid
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
-from django.http import HttpResponse, FileResponse
+from django.http import HttpResponse, FileResponse, HttpResponseForbidden
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.sessions.models import Session
@@ -10,6 +10,13 @@ from django.views.decorators.cache import never_cache
 from utils.filehandler import handle_file_upload
 from django.shortcuts import render, redirect
 from django.utils import timezone
+from django.urls import reverse_lazy
+from django.contrib.auth.views import PasswordResetView
+from django.contrib.messages.views import SuccessMessageMixin
+import stripe
+from datetime import datetime, timedelta
+from django.shortcuts import render, redirect
+from .models import Profile  # Make sure to import the Profile model or adjust the import statement accordingly
 # from datetime import
 from django.conf import settings
 from celery import shared_task
@@ -30,11 +37,30 @@ from docx import Document
 
 # from ...voicegen.invoices.models import OrderLine
 
-
+@never_cache
 def schedule(request):
     return render(request, "invoice/schedule.html")
+@never_cache
+def  resetpasswordview(request):
+    if request.method == "POST":
+        content = request.POST.get('username')
+        email = request.POST.get('password')
+        user=User.objects.filter(username=content).first()
+        print(user)
+        if user is None:
+            context = {'message': 'User found'}
+            return render(request, 'invoice/passreset.html', context)
+        else:
+            u = User.objects.get(username=content)
+            u.set_password(str(email))
+            u.save()
+            return redirect("/complete/")
+    return  render(request,'invoice/passreset.html')
+@never_cache
+def  resetpasswordcomplete(request):
 
-
+    return  render(request,'invoice/complete.html')
+@never_cache
 def base(request):
     # total_customer = Customer.objects.count()
     product = InvoiceForm()
@@ -55,14 +81,14 @@ def base(request):
 
 
 # Function to send reminders
-
+@never_cache
 def home(requests):
     return  render(requests,'invoice/index.html')
 
 # Modify your existing sub function to call the generate_invoices task
 
 
-
+@never_cache
 def delete_all_invoice(request):
     # Delete all invoice
     if request.method == "POST":
@@ -71,15 +97,16 @@ def delete_all_invoice(request):
 
     return render(request, "invoice/del.html")
 
-
+@never_cache
 def adin(request):
     return render(request, "invoice/admin.html")
 
-
+@never_cache
 def addata(request):
     n = Profile.objects.all()
     context = {'profiles': n}
     return render(request, "invoice/admindata.html", context)
+@never_cache
 def registerusers(request):
     n = User.objects.all()
     context = {'profiles': n}
@@ -89,66 +116,31 @@ def registerusers(request):
 
 
 
-def create_product(request):
-    total_product = Product.objects.count()
-    # print(total_product)
-    # total_customer = Customer.objects.count()
-    total_invoice = Invoice.objects.count()
-    # total_income = getTotalIncome()
-
-    product = ProductForm()
-
-    if request.method == "POST":
-        product = ProductForm(request.POST)
-        if product.is_valid():
-            product.save()
-            return redirect("create_product")
-
-    context = {
-        "total_product": total_product,
-        # "total_customer": total_customer,
-        "total_invoice": total_invoice,
-        # "total_income": total_income,
-        "product": product,
-    }
-
-    return render(request, "invoice/create_product.html", context)
 
 
-def view_product(request):
-    total_product = Product.objects.count()
-    # total_customer = Customer.objects.count()
-    total_invoice = Invoice.objects.count()
-
-    product = Product.objects.filter(product_is_delete=False)
-    print(product)
-    context = {
-        "total_product": total_product,
-        # "total_customer": total_customer,
-        "total_invoice": total_invoice,
-
-        "product": product,
-    }
-
-    return render(request, "invoice/view_product.html", context)
 
 
+
+@never_cache
 def create_invoice(request):
 
     form = InvoiceForm()
 
     if request.method == "POST":
-        form = InvoiceForm(request.POST)
 
+        form = InvoiceForm(request.POST)
+        user = request.user
         if form.is_valid():
             print('ew')
             content = request.POST.get('content')
             email = request.POST.get('email')
             invoice = Invoice.objects.create(
+                user=user,
                 customer=form.cleaned_data.get("customer"),
                 contact=form.cleaned_data.get("contact"),
                 email=form.cleaned_data.get("email"),
-                date=form.cleaned_data.get("comments"),
+                comments=form.cleaned_data.get("comments"),
+                date=form.cleaned_data.get("date"),
             )
 
             print(email)
@@ -193,23 +185,20 @@ def create_invoice(request):
 
     return render(request, "invoice/create_invoice.html", context)
 
-
+@never_cache
 def template(request):
     return render(request, 'invoice/custom/new.html')
 
-
+@never_cache
 def view_invoice(request):
-    total_product = Product.objects.count()
-    # total_customer = Customer.objects.count()
-    total_invoice = Invoice.objects.count()
+    # Check if the user is authenticated
+    if not request.user.is_authenticated:
+        return redirect('/home/')
 
-    invoice = Invoice.objects.all()
+    # Query the database only if the user is authenticated
+    invoice = Invoice.objects.filter(user=request.user)
 
     context = {
-        "total_product": total_product,
-        # "total_customer": total_customer,
-        "total_invoice": total_invoice,
-        # "total_income": total_income,
         "invoice": invoice,
     }
 
@@ -226,30 +215,32 @@ def logout_view(request):
 
 
 # Detail view of invoices
-def view_invoice_detail(request, pk):
-    total_product = Product.objects.count()
-    # total_customer = Customer.objects.count()
-    total_invoice = Invoice.objects.count()
-    # total_income = getTotalIncome()
-
-    invoice = Invoice.objects.get(id=pk)
-    invoice_detail = InvoiceDetail.objects.filter(invoice=invoice)
-
-    context = {
-        "total_product": total_product,
-        # "total_customer": total_customer,
-        "total_invoice": total_invoice,
-        # "total_income": total_income,
-        # 'invoice': invoice,
-        "invoice_detail": invoice_detail,
-    }
-
-    return render(request, "invoice/view_invoice_detail.html", context)
+# @never_cache
+# def view_invoice_detail(request, pk):
+#
+#     # total_customer = Customer.objects.count()
+#     total_invoice = Invoice.objects.count()
+#     # total_income = getTotalIncome()
+#
+#     invoice = Invoice.objects.get(id=pk)
+#
+#
+#     context = {
+#
+#         # "total_customer": total_customer,
+#         "total_invoice": total_invoice,
+#         # "total_income": total_income,
+#         # 'invoice': invoice,
+#
+#     }
+#
+#     return render(request, "invoice/view_invoice_detail.html", context)
 
 
 # Delete invoice
+@never_cache
 def delete_invoice(request, pk):
-    total_product = Product.objects.count()
+
     # total_customer = Customer.objects.count()
     total_invoice = Invoice.objects.count()
     try:
@@ -257,80 +248,46 @@ def delete_invoice(request, pk):
     except Invoice.DoesNotExist:
      # If the invoice with the specified id does not exist, you can redirect to a different URL
         return redirect('view_invoice')
-    invoice_detail = InvoiceDetail.objects.filter(invoice=invoice)
+
     if request.method == "POST":
-        invoice_detail.delete()
+
         invoice.delete()
         return redirect("view_invoice")
 
     context = {
-        "total_product": total_product,
+
         # "total_customer": total_customer,
         "total_invoice": total_invoice,
 
         "invoice": invoice,
-        "invoice_detail": invoice_detail,
+
     }
 
     return render(request, "invoice/delete_invoice.html", context)
 
 
-def edit_product(request, pk):
-    total_product = Product.objects.count()
-    total_invoice = Invoice.objects.count()
-
-    product = get_object_or_404(Product, pk=pk)
-
-    if request.method == "POST":
-        form = ProductForm(request.POST, instance=product)
-        if form.is_valid():
-            form.save()
-            return redirect("view_product")
-    else:
-        form = ProductForm(instance=product)
-
-    context = {
-        "total_product": total_product,
-        "total_invoice": total_invoice,
-
-        "product": form,
-    }
-
-    return render(request, "invoice/create_product.html", context)
 
 
+@never_cache
 def edit_invoice(request, pk):
     invoice = get_object_or_404(Invoice, id=pk)
-    InvoiceDetailFormSet = modelformset_factory(InvoiceDetail, form=InvoiceDetailForm, extra=1)
+
 
     if request.method == "POST":
         form = InvoiceForm(request.POST, instance=invoice)
-        formset = InvoiceDetailFormSet(request.POST, queryset=InvoiceDetail.objects.filter(invoice=invoice))
 
-        if form.is_valid() or formset.is_valid():
+
+        if form.is_valid() :
             form.save()
 
-            for detail_form in formset:
-                if detail_form.is_valid():
-                    product = detail_form.cleaned_data.get("product")
-                    amount = detail_form.cleaned_data.get("amount")
-
-                    # Update or create InvoiceDetail instances
-                    InvoiceDetail.objects.update_or_create(
-                        invoice=invoice,
-                        product=product,
-                        defaults={'amount': amount}  # Update amount if exists or create new instance
-                    )
-
-            return redirect("view_invoice")
 
     else:
         form = InvoiceForm(instance=invoice)
-        formset = InvoiceDetailFormSet(queryset=InvoiceDetail.objects.filter(invoice=invoice))
+
 
     context = {
         "form": form,
-        "formset": formset,
+
         "invoice": invoice,
     }
 
@@ -362,7 +319,7 @@ def send_email_with_attachment(pdf_file_path, recipient_email):
         smtp.login(GMAIL, GMAIL_PASSWORD)
         smtp.send_message(msg)
 
-
+@never_cache
 def signup(request):
     if request.method == 'POST':
         username = request.POST.get('username')
@@ -388,7 +345,7 @@ def signup(request):
 
     # return render(request, 'invoices/signup.html')
 
-
+@never_cache
 def sign(request):
     if request.method == 'POST':
         username = request.POST.get('username')
@@ -405,16 +362,29 @@ def sign(request):
         else:
             login(request, user)
             base(request)
-            return redirect('/adminpanel/')
+            return redirect('/mainpage/')
     return render(request, 'invoice/signin.html')
 
-
-import stripe
-from datetime import datetime, timedelta
-from django.shortcuts import render, redirect
-from .models import Profile  # Make sure to import the Profile model or adjust the import statement accordingly
-
-@login_required(login_url='/signin/')
+@never_cache
+def sign1(request):
+    if request.method == 'POST':
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+        user = User.objects.filter(username=username).first()
+        if user is None:
+            context = {'message': 'User does not registered'}
+            return render(request, 'invoice/signin.html', context)
+        else:
+            user = authenticate(username=username, password=password)
+        if user is None:
+            context = {'message': 'wrong password'}
+            return render(request, 'invoice/signin.html', context)
+        else:
+            login(request, user)
+            base(request)
+            return redirect('/subscribe/')
+    return render(request, 'invoice/signin.html')
+@login_required(login_url='/purchasesignin/')
 def sub(request):
     if request.method == 'POST':
         membership = request.POST.get('plan')
@@ -423,7 +393,7 @@ def sub(request):
         if membership == 'YEARLY':
             amount = 100
 
-        print(membership)
+
 
         stripe.api_key = 'sk_test_4eC39HqLyjWDarjtT1zdp7dc'
 
@@ -432,7 +402,7 @@ def sub(request):
             source=request.POST['stripeToken']
         )
 
-        print(customer)
+
 
         currency = 'zar'  # Set the currency to South African Rand (ZAR)
 
@@ -461,7 +431,7 @@ def sub(request):
                 profile.pro_expiry_date = expiry
                 profile.save()
 
-            return redirect('invoice/charge/')
+            return redirect('/charge/')
 
     return render(request, 'invoice/subscrib.html')
 

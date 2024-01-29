@@ -46,36 +46,8 @@ def get_template_files():
 # @admin.register(temp)
 # class TempAdmin(admin.ModelAdmin):
 #         list_display = ('id', 'template_options')
-class Product(models.Model):
-    product_name = models.CharField(max_length=255)
-    address = models.CharField(max_length=255)
-    general = models.CharField(max_length=255)
-    company = models.CharField(max_length=255)
-    date= models.CharField(max_length=255)
-    demand = models.CharField(max_length=255)
-    product_is_delete = models.BooleanField(default=False)
-
-
-    def __str__(self):
-        return str(self.product_name)
-
-
-# class Customer(models.Model):
-#     GENDER_CHOICES = (
-#         ('Male', 'Male'),
-#         ('Female', 'Female'),
-#         ('Others', 'Others'),
-#     )
-#     customer_name = models.CharField(max_length=255)
-#     customer_gender = models.CharField(max_length=50, choices=GENDER_CHOICES)
-#     customer_dob = models.DateField()
-#     customer_points = models.IntegerField(default=0)
-
-#     def __str__(self):
-#         return str(self.customer_name)
-
-
 class Invoice(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
     date = models.DateField(auto_now_add=True)
     customer = models.TextField(default='')
     contact = models.CharField(max_length=255, default='', blank=True, null=True)
@@ -84,19 +56,17 @@ class Invoice(models.Model):
     content = RichTextUploadingField()
     pdf_document = models.FileField(upload_to='invoices_pdf/')
 
-
     def __str__(self):
         return str(self.id)
 
 
 
-class InvoiceDetail(models.Model):
-    invoice = models.ForeignKey(Invoice, on_delete=models.SET_NULL, blank=True, null=True)
-    product = models.ForeignKey( Product, on_delete=models.SET_NULL, blank=True, null=True)
-    COLOR_CHOICES = get_template_files()
-    amount=models.CharField(max_length=100, choices=COLOR_CHOICES)
-    def __str__(self):
-        return str(self.amount)
+
+
+
+
+
+
 
 
 

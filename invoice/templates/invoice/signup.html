@@ -47,6 +47,23 @@
                 width: 300px;
             }
         }
+     #messageContainer {
+    background-color: #f0f0f0; /* Light gray background */
+    border: 1px solid #ccc; /* Gray border */
+    border-radius: 5px; /* Rounded corners */
+    padding: 10px; /* Spacing inside the container */
+    margin-bottom: 10px; /* Spacing below the container */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Shadow for a lifted effect */
+  }
+
+  .alert {
+    background-color: #d1ecf1; /* Light blue background */
+    border-color: #bee5eb; /* Light blue border */
+    color: #0c5460; /* Dark blue text */
+    border-radius: 5px; /* Rounded corners */
+    padding: 10px; /* Spacing inside the alert */
+    margin-bottom: 10px; /* Spacing below the alert */
+  }
 
   </style>
 
@@ -57,8 +74,13 @@
   <h2>Sign Up</h2>
 
   <form action="{% url 'signup' %}" method="post">
-    {% if message %} <div class="alert alert-info">{{ message }}</div> {% endif %}
+
   {% csrf_token %}
+    {% if message %}
+    <div id="messageContainer">
+        <div class="alert alert-info">{{ message }}</div>
+      </div>
+      {% endif %}
   <input type="text" placeholder="Username" name="username" required>
   <input type="email" placeholder="Email" name="email" required>
   <input type="password" placeholder="Password" name="password" required>
